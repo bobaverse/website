@@ -1,0 +1,32 @@
+{
+  "name": "bobaverse-website",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "type-check": "tsc"
+  },
+  "dependencies": {
+    "@rainbow-me/rainbowkit": "^0.12.1",
+    "ethers": "^5.7.2",
+    "next": "13.2.4",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "wagmi": "^0.12.1",
+    "encoding": "^0.1.13"
+  },
+  "devDependencies": {
+    "@fullhuman/postcss-purgecss": "5.0.0",
+    "@types/node": "18.15.3",
+    "@types/react": "18.0.28",
+    "@types/react-dom": "18.0.11",
+    "autoprefixer": "10.4.13",
+    "eslint": "8.35.0",
+    "eslint-config-next": "13.2.1",
+    "postcss-preset-env": "8.0.1",
+    "tailwindcss": "3.2.7",
+    "typescript": "4.9.5"
+  }
+}
