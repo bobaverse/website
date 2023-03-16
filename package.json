@@ -9,7 +9,6 @@
     "type-check": "tsc"
   },
   "dependencies": {
-    "@fullhuman/postcss-purgecss": "5.0.0",
     "@rainbow-me/rainbowkit": "^0.12.1",
     "@types/node": "18.15.3",
     "@types/react": "18.0.28",
