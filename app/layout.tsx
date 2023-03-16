@@ -1,6 +1,6 @@
 import "@/styles/index.css";
 import { Eczar } from "next/font/google";
-import Header from "@/components/layout/Header";
+import NavBar from "@/components/navigation/NavBar";
 import { FC } from "react";
 import { PageProps } from "@/interfaces";
 import { Metadata } from "next";
@@ -35,7 +35,7 @@ const RootLayout: FC<PageProps> = ({ children }) => {
     <html lang="en" className={eczar.className}>
     <body>
     <BlockchainProvider>
-      <Header />
+      <NavBar />
       <main className="mt-[8px] h-full">{children}</main>
     </BlockchainProvider>
     </body>

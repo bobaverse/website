@@ -23,7 +23,7 @@ import {
 
 import { BobaChains } from "@/utils/blockchain/chains";
 
-const appName = 'Tradescrow';
+const appName = 'BobaVerse';
 
 const defaultChains: Chain[] = [
   {

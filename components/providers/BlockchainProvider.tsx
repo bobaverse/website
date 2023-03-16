@@ -1,13 +1,11 @@
 'use client';
 
-import "@rainbow-me/rainbowkit/styles.css";
-
 import { FC } from "react";
 import { PageProps } from "@/interfaces";
 import { WagmiConfig } from "wagmi";
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { chains, wagmiClient } from "@/utils/blockchain";
-import rainbowkitTheme from "@/utils/blockchain/rainbowkit.theme";
+import rainbowkitTheme from "@/styles/rainbowkit";
 
 const BlockchainProvider: FC<PageProps> = ({ children }) => {
   return (

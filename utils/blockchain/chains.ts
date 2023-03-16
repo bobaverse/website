@@ -2,7 +2,7 @@ import { Chain } from 'wagmi'
 
 export const bobaEth = {
   id: 288,
-  name: 'Boba Ethereum',
+  name: 'Boba Eth',
   network: 'bobaeth',
   nativeCurrency: {
     decimals: 18,
@@ -52,7 +52,7 @@ export const bobaOpera = {
 
 export const bobaBeam = {
   id: 1_294,
-  name: 'Boba Moonbeam',
+  name: 'Boba Beam',
   network: 'bobabeam',
   nativeCurrency: {
     decimals: 18,
@@ -77,7 +77,7 @@ export const bobaBeam = {
 
 export const bobaAvax = {
   id: 43_288,
-  name: 'Boba Avalanche',
+  name: 'Boba Avax',
   network: 'bobaavax',
   nativeCurrency: {
     decimals: 18,

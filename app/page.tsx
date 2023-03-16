@@ -1,12 +1,19 @@
 import Image from "next/image";
 import { FC } from "react";
 import Logo from "@/public/Logo.png";
+import BigButton from "@/components/buttons/BigButton";
 
 const Home: FC = () => {
+
   return (
-    <div className="flex flex-col pt-4 h-full justify-center select-none">
-      <Image src={Logo} alt="logo" width={512} className="mx-auto" />
-      <span className="text-4xl font-semibold mx-auto mt-4">Welcome to the BobaVerse</span>
+    <div className="flex flex-col flex-wrap pt-4 h-full items-center select-none">
+      <Image src={Logo} alt="logo" width={256} priority />
+      <span className="text-4xl font-semibold mt-4">Welcome to the BobaVerse</span>
+      <div className="flex center space-x-4 mt-4">
+        <BigButton text="Arcade" href="/#" />
+        <BigButton text="Profile" href="/#" />
+        <BigButton text="Leaderboards" href="/#" />
+      </div>
     </div>
   );
 }

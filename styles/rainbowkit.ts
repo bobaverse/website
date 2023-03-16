@@ -1,13 +1,10 @@
 import { Theme } from '@rainbow-me/rainbowkit';
 import { AccentColorPreset } from "@rainbow-me/rainbowkit/dist/themes/baseTheme";
-import { Property } from "csstype";
-
-import AccentColor = Property.AccentColor;
 
 const darkGrey = '#1A1B1F';
 
 const accentColors: Record<AccentColorPreset, any> = {
-  blue: { accentColor: '#3da9ad', accentColorForeground: '#000' },
+  blue: { accentColor: 'rgba(255, 255, 255, 0.04)', accentColorForeground: '#fef2c5' },
   green: { accentColor: '#4BD166', accentColorForeground: darkGrey },
   orange: { accentColor: '#FF983D', accentColorForeground: darkGrey },
   pink: { accentColor: '#FF7AB8', accentColorForeground: darkGrey },
@@ -52,47 +49,29 @@ const radiusScales: Record<
 };
 
 type Blurs = 'large' | 'small' | 'none';
-const blurs: Record<
-  Blurs,
-  {
-    modalOverlay: string;
-  }
-> = {
-  large: {
-    modalOverlay: 'blur(20px)',
-  },
-  none: {
-    modalOverlay: 'blur(0px)',
-  },
-  small: {
-    modalOverlay: 'blur(4px)',
-  },
+
+const blurs: Record<Blurs, { modalOverlay: string }> = {
+  none: { modalOverlay: 'blur(0px)' },
+  small: { modalOverlay: 'blur(4px)' },
+  large: { modalOverlay: 'blur(20px)' },
 };
 
-const borderRadius: RadiusScale = 'large';
-const overlayBlur: Blurs = 'large';
-
-const defaultAccentColor = accentColors.blue;
-
 const rainbowkitTheme: Theme = {
-  blurs: {
-    modalOverlay: blurs[overlayBlur].modalOverlay,
-  },
+  blurs: { modalOverlay: blurs.large.modalOverlay },
   colors: {
-    accentColor: defaultAccentColor.accentColor,
-    accentColorForeground: defaultAccentColor.accentColorForeground,
+    accentColor: accentColors.blue.accentColor,
+    accentColorForeground: accentColors.blue.accentColorForeground,
     actionButtonBorder: 'rgba(255, 255, 255, 0.04)',
     actionButtonBorderMobile: 'rgba(255, 255, 255, 0.08)',
     actionButtonSecondaryBackground: 'rgba(255, 255, 255, 0.08)',
     closeButton: 'rgba(224, 232, 255, 0.6)',
     closeButtonBackground: 'rgba(255, 255, 255, 0.08)',
-    connectButtonBackground: 'linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(0, 90, 234, 0.1) 100%)',
+    connectButtonBackground: 'rgba(255, 255, 255, 0.04)',
     connectButtonBackgroundError: '#FF494A',
-    connectButtonInnerBackground:
-      'linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(0, 90, 234, 0.1) 100%)',
-    connectButtonText: '#FFF',
+    connectButtonInnerBackground: 'rgba(255, 255, 255, 0.04)',
+    connectButtonText: '#fef2c5',
     connectButtonTextError: '#FFF',
-    connectionIndicator: '#30E000',
+    connectionIndicator: '#adf4b1',
     downloadBottomCardBackground:
       'linear-gradient(126deg, rgba(0, 0, 0, 0) 9.49%, rgba(120, 120, 120, 0.2) 71.04%), #1A1B1F',
     downloadTopCardBackground:
@@ -102,9 +81,9 @@ const rainbowkitTheme: Theme = {
     generalBorderDim: 'rgba(255, 255, 255, 0.04)',
     menuItemBackground: 'rgba(224, 232, 255, 0.1)',
     modalBackdrop: 'rgba(0, 0, 0, 0.5)',
-    modalBackground: '#1A1B1F',
+    modalBackground: 'rgba(64, 42, 8, 0.8)',
     modalBorder: 'rgba(255, 255, 255, 0.08)',
-    modalText: '#FFF',
+    modalText: '#fef2c5',
     modalTextDim: 'rgba(224, 232, 255, 0.3)',
     modalTextSecondary: 'rgba(255, 255, 255, 0.6)',
     profileAction: 'rgba(224, 232, 255, 0.1)',
@@ -114,14 +93,14 @@ const rainbowkitTheme: Theme = {
     standby: '#FFD641',
   },
   fonts: {
-    body: 'Exo',
+    body: 'Eczar',
   },
   radii: {
-    actionButton: radiusScales[borderRadius].actionButton,
+    actionButton: radiusScales.large.actionButton,
     connectButton: '20px',
-    menuButton: radiusScales[borderRadius].connectButton,
-    modal: radiusScales[borderRadius].modal,
-    modalMobile: radiusScales[borderRadius].modalMobile,
+    menuButton: radiusScales.large.connectButton,
+    modal: radiusScales.large.modal,
+    modalMobile: radiusScales.large.modalMobile,
   },
   shadows: {
     connectButton: '0px 4px 12px rgba(0, 0, 0, 0.1)',
