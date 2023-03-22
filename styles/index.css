@@ -1,13 +1,15 @@
-/* purgecss start ignore */
 @tailwind base;
 @tailwind components;
-/* purgecss end ignore */
 @tailwind utilities;
 
 * {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
+}
+
+*::-webkit-scrollbar {
+    display: none;
 }
 
 html,
@@ -21,6 +23,9 @@ body {
     background-size: cover;
 }
 
+body > :first-child {
+    height: 100%;
+}
 
 #__next {
     height: 100%;

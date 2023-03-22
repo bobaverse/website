@@ -36,7 +36,7 @@ const RootLayout: FC<PageProps> = ({ children }) => {
     <body>
     <BlockchainProvider>
       <NavBar />
-      <main className="mt-[8px] h-full">{children}</main>
+      <div className="overflow-y-scroll h-full">{children}</div>
     </BlockchainProvider>
     </body>
     </html>
