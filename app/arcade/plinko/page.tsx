@@ -1,8 +1,8 @@
 'use client';
 import { useEffect } from 'react'
-import { useGameStore } from '@/components/store/arcade'
+import { useArcadeStore } from '@/components/store/arcade'
 
-import { Game } from '@/components/arcade/plinko'
+import Game from '@/components/arcade/plinko'
 
 const Plinko = () => {
   const alertUser = (e: BeforeUnloadEvent) => {
@@ -12,7 +12,7 @@ const Plinko = () => {
       e.returnValue = ''
     }
   }
-  const gamesRunning = useGameStore(state => state.gamesRunning)
+  const gamesRunning = useArcadeStore(state => state.gamesRunning)
   useEffect(() => {
     window.addEventListener('beforeunload', alertUser)
     return () => {

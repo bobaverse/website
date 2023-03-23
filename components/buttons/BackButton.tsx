@@ -11,8 +11,9 @@ const BackButton: FC = () => {
     router.back();
   }
   return (
-    <button type="button" onClick={onBack} className={`bg-button rounded-full pr-1 py-0.5`}>
+    <button type="button" onClick={onBack} className={`absolute inset-y-0 mt-3 left-5 flex`}>
       <IoIosArrowBack size={30} />
+      <span className="mt-1">Back</span>
     </button>
   );
 }
