@@ -33,12 +33,12 @@ export const metadata: Metadata = {
 const RootLayout: FC<PageProps> = ({ children }) => {
   return (
     <html lang="en" className={eczar.className}>
-    <body>
-    <BlockchainProvider>
-      <NavBar />
-      <main className="mt-[8px] h-full">{children}</main>
-    </BlockchainProvider>
-    </body>
+      <body>
+        <BlockchainProvider>
+          <NavBar />
+          <div className="overflow-y-scroll h-full">{children}</div>
+        </BlockchainProvider>
+      </body>
     </html>
   );
 }
