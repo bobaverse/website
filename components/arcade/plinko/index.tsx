@@ -1,20 +1,15 @@
 'use client';
-import { Bodies, Body, Composite, Engine, Events, IEventCollision, Render, Runner, World } from 'matter-js'
+import { Body, Composite, Engine, Events, IEventCollision, Render, Runner } from 'matter-js'
 import { useEffect, useRef, useState } from 'react'
 import { useArcadeStore } from '@/components/store/arcade'
 import { random } from 'utils/random'
 
 import config from './config'
+import { GameState } from "@/components/store/types";
+import { makeBall, makeBoardBodies } from "@/components/arcade/plinko/objects";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-enum GameState {
-  Ready,
-  Started,
-  SureUp,
-  Finalizing,
-  Finished
-}
 
 const buttonText: Record<GameState, string> = {
   [GameState.Ready]: "Play",
@@ -28,15 +23,16 @@ const Game = () => {
   // #region States
   const boxRef = useRef(null);
   const canvasRef = useRef(null);
-  const [engine, setEngine] = useState(Engine.create({}));
+  
   const [balls, setBalls] = useState<Body[]>([]);
   const [bucketValues, setBucketValues] = useState<number[]>([1, 3, 5, 7, 9, 7, 5, 3, 1])
   const results = useArcadeStore(state => state.results);
   const addResult = useArcadeStore(state => state.addResult);
   const clearResults = useArcadeStore(state => state.clearResults);
-
-  const [gameState, setGameState] = useState<GameState>(GameState.Ready);
-
+  const gameState = useArcadeStore(state => state.state);
+  const setGameState = useArcadeStore(state => state.setState);
+  
+  const [engine] = useState(Engine.create());
 
   const finalScore = 169;
 
@@ -82,6 +78,7 @@ const Game = () => {
         addResult('ball-19', finalBall);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameState, results])
 
   useEffect(() => {
@@ -89,7 +86,7 @@ const Game = () => {
     if (gameState == GameState.Finalizing && Object.keys(results).length == 19) {
       interval = setInterval(() => {
         if (!('ball-19' in results)) {
-          setBucketValues(Array.from(Array(9)).map(() => random(10, 100)))
+          setBucketValues(Array.from(Array(9)).map(() => Math.floor(random(10, 100))))
         }
       }, 100)
     }
@@ -100,26 +97,7 @@ const Game = () => {
 
   const addBalls = async (count: number) => {
     for (let i = 0; i < count; i++) {
-      const id = count === 1 ? 19 : i;
-      const minBallX = 50
-      const maxBallX = config.world.width - 50
-
-      const ballX = random(minBallX, maxBallX)
-      const ballColor = id == 19 ? "#be7901" : "#E234d2"
-      const ball = Bodies.circle(ballX, 20, config.ball.size, {
-        restitution: 1,
-        friction: 0.6,
-        label: `ball-${id}`,
-        id: new Date().getTime(),
-        frictionAir: 0.05,
-        collisionFilter: {
-          group: -1
-        },
-        render: {
-          fillStyle: ballColor
-        },
-        isStatic: false
-      })
+      const ball = makeBall(count === 1 ? 19 : i)
       setBalls([...balls, ball])
       Composite.add(engine.world, ball)
       await sleep(100)
@@ -129,7 +107,6 @@ const Game = () => {
     if (!canvasRef.current || !boxRef.current) {
       return;
     }
-
 
     let render = Render.create({
       element: boxRef.current,
@@ -153,102 +130,13 @@ const Game = () => {
       }
     });
 
-    const leftWall = Bodies.rectangle(
-      0,
-      config.world.height / 2,
-      config.world.height,
-      10,
-      {
-        angle: 1.5708,
-        render: {
-          fillStyle: '#FFFFFF',
-          visible: true
-        },
-        isStatic: true
-      }
-    )
-    const rightWall = Bodies.rectangle(
-      config.world.width,
-      config.world.height / 2,
-      config.world.height,
-      10,
-      {
-        angle: 1.5708,
-        render: {
-          fillStyle: '#FFFFFF',
-          visible: true
-        },
-        isStatic: true
-      }
-    )
-
-    const floor = Bodies.rectangle(
-      0,
-      config.world.height - 2,
-      config.world.width * 10,
-      10,
-      {
-        label: 'floor',
-        render: {
-          fillStyle: '#ffffff',
-          visible: true
-        },
-        isStatic: true
-      }
-    )
-
-    const pins: Body[] = []
-    for (let l = 0; l < config.pins.lines; l++) {
-      const even = l % 2 == 0;
-      const ppl = even ? config.pins.max : config.pins.min;
-      const lineWidth = ppl * config.pins.gap;
-      for (let i = 0; i < ppl; i++) {
-        const pinX = config.world.width / 2 - lineWidth / 2 + i * config.pins.gap + config.pins.gap / 2;
-        const pinY = config.world.width / config.pins.lines + l * config.pins.gap
-        const pin = Bodies.circle(pinX, pinY, config.pins.size, {
-          label: `pin-${i}`,
-          render: {
-            fillStyle: '#F5DCFF'
-          },
-          isStatic: true
-        })
-        pins.push(pin)
-      }
-    }
-
-    const bins: Body[] = []
-    for (let i = 0; i < config.bins.count; i++) {
-      const width = config.world.width / config.bins.count;
-      const bin = Bodies.rectangle(
-        width * i,
-        config.world.height - 20,
-        80,
-        5,
-        {
-          label: `bin-${i}`,
-          angle: 1.5708,
-          render: {
-            fillStyle: '#ffffff',
-          },
-          isStatic: true
-        }
-      )
-      bins.push(bin)
-    }
-
-    Composite.add(engine.world, [
-      ...bins,
-      ...pins,
-      leftWall,
-      rightWall,
-      floor,
-    ]);
+    Composite.add(engine.world, makeBoardBodies());
 
     Runner.run(engine);
     Render.run(render);
-  }, []);
+  }, [engine]);
 
-  async function onBodyCollision(event: IEventCollision<Engine>) {
+  const onBodyCollisionStart = async (event: IEventCollision<Engine>) => {
     const pairs = event.pairs
     for (const pair of pairs) {
       const { bodyA, bodyB: ball } = pair
@@ -263,13 +151,14 @@ const Game = () => {
       }
     }
   }
-  Events.on(engine, "collisionStart", onBodyCollision);
+
+  Events.on(engine, "collisionStart", onBodyCollisionStart);
   return (
     <div className="flex flex-col justify-center justify-center gap-4">
       <div ref={boxRef} className="relative w-[650px] h-[750px]">
         <canvas ref={canvasRef} className="absolute left-0 top-0" />
         <div className="absolute top-[10px] left-[20px] z-20 pointer-events-none">
-                <span>Score: {score()}</span>
+          <span>Score: {score()}</span>
         </div>
         <div className="absolute top-[700px] w-full z-20 flex pointer-events-none">
           {bucketValues.map((v, i) => (
@@ -281,7 +170,7 @@ const Game = () => {
       </div>
       <button
         onClick={onPlay}
-        className="hidden rounded-md bg-purple py-2 font-bold leading-none text-background transition-colors hover:bg-purpleDark focus:outline-none focus:ring-1 focus:ring-purple focus:ring-offset-1 focus:ring-offset-primary disabled:bg-gray-500 md:visible md:block"
+        className="rounded-full bg-button py-2 font-bold disabled:bg-gray-500 "
         disabled={gameState == GameState.Started || gameState == GameState.Finalizing}
       >
         {buttonText[gameState]}
