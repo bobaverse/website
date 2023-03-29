@@ -2,18 +2,18 @@ const config = {
   pins: {
     max: 12,
     min: 11,
-    size: 10,
-    gap: 50,
+    size: 6.7,
+    gap: 49,
     lines: 13
   },
   bins: {
     count: 9
   },
   ball: {
-    size: 12
+    size: 13
   },
   engine: {
-    gravity: 1.0
+    gravity: 3.0
   },
   world: {
     width: 650,

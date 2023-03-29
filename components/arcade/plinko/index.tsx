@@ -7,6 +7,9 @@ import { random } from 'utils/random'
 import config from './config'
 import { GameState } from "@/components/store/types";
 import { makeBall, makeBoardBodies } from "@/components/arcade/plinko/objects";
+import PlinkoBoard from '@/assets/arcade/plinko/PlinkoBoard.png';
+import PlinkoCups from '@/assets/arcade/plinko/PlinkoCups.png';
+import Image from "next/image";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -33,7 +36,7 @@ const Game = () => {
   const setGameState = useArcadeStore(state => state.setState);
   
   const [engine] = useState(Engine.create());
-
+  engine.gravity.y = config.engine.gravity;
   const finalScore = 169;
 
   const score = () => Object.values(results).reduce((o, a) => { o+=a; return o; }, 0)
@@ -45,17 +48,21 @@ const Game = () => {
         await addBalls(19);
         break;
       case GameState.SureUp:
-        setGameState(GameState.Finalizing);
-        await addBalls(1);
-        break;
-      case GameState.Finished:
-
-        clearResults();
         Composite.allBodies(engine.world).forEach((body) => {
           if (body.label.startsWith('ball')) {
             Composite.remove(engine.world, body);
           }
         });
+        setGameState(GameState.Finalizing);
+        await addBalls(1);
+        break;
+      case GameState.Finished:
+        Composite.allBodies(engine.world).forEach((body) => {
+          if (body.label.startsWith('ball')) {
+            Composite.remove(engine.world, body);
+          }
+        });
+        clearResults();
         setBucketValues([1, 3, 5, 7, 9, 7, 5, 3, 1]);
         setGameState(GameState.Ready)
     }
@@ -125,7 +132,7 @@ const Game = () => {
       options: {
         width: config.world.width,
         height: config.world.height,
-        background: '#686868',
+        background: 'transparent',
         wireframes: false
       }
     });
@@ -146,8 +153,8 @@ const Game = () => {
           const finalBin = Math.floor(ball.position.x / binWidth);
           const value = bucketValues[finalBin];
           addResult(ball.label, value)
+          setTimeout(() => Composite.remove(engine.world, ball), 500)
         }
-
       }
     }
   }
@@ -156,11 +163,13 @@ const Game = () => {
   return (
     <div className="flex flex-col justify-center justify-center gap-4">
       <div ref={boxRef} className="relative w-[650px] h-[750px]">
-        <canvas ref={canvasRef} className="absolute left-0 top-0" />
+        <Image src={PlinkoBoard} alt="plinkoBoard" width={config.world.width} />
+        <Image src={PlinkoCups} alt="plinkoCups" width={config.world.width} className="absolute top-0 z-10" />
+        <canvas id="plinkoCanvas" ref={canvasRef} className="absolute left-0 top-0" />
         <div className="absolute top-[10px] left-[20px] z-20 pointer-events-none">
           <span>Score: {score()}</span>
         </div>
-        <div className="absolute top-[700px] w-full z-20 flex pointer-events-none">
+        <div className="absolute top-[700px] w-full px-3 z-20 flex pointer-events-none">
           {bucketValues.map((v, i) => (
             <div key={i} className="w-[72px] text-center">
               <span>{v}</span>

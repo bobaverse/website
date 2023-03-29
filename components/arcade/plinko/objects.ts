@@ -2,45 +2,45 @@
 import { Bodies, Body } from "matter-js";
 import config from "@/components/arcade/plinko/config";
 import { random } from "@/utils/random";
+import GreenBall from '@/assets/arcade/plinko/GreenBall.png';
 
 export const makeBoardBodies = () => {
   const fillStyle = '#FFF'
+  const visible = false;
   // noinspection JSSuspiciousNameCombination
   const leftWall = Bodies.rectangle(
-    0,
+    3,
     config.world.height / 2,
     config.world.height,
-    10,
+    20,
     {
       angle: 1.5708,
-      render: {
-        fillStyle: '#FFFFFF',
-      },
+      render: { fillStyle, visible },
       isStatic: true
     }
   )
 
 // noinspection JSSuspiciousNameCombination
   const rightWall = Bodies.rectangle(
-    config.world.width,
+    config.world.width - 3,
     config.world.height / 2,
     config.world.height,
-    10,
+    20,
     {
       angle: 1.5708,
-      render: { fillStyle },
+      render: { fillStyle, visible },
       isStatic: true
     }
   )
 
   const floor = Bodies.rectangle(
     0,
-    config.world.height - 2,
+    config.world.height - 6,
     config.world.width * 10,
-    10,
+    20,
     {
       label: 'floor',
-      render: { fillStyle },
+      render: { fillStyle, visible },
       isStatic: true
     }
   )
@@ -48,43 +48,59 @@ export const makeBoardBodies = () => {
   const pins: Body[] = []
   for (let l = 0; l < config.pins.lines; l++) {
     const even = l % 2 == 0;
-    const ppl = even ? config.pins.max : config.pins.min;
+    const ppl = even ? config.pins.min : config.pins.max;
     const lineWidth = ppl * config.pins.gap;
     for (let i = 0; i < ppl; i++) {
       const pinX = config.world.width / 2 - lineWidth / 2 + i * config.pins.gap + config.pins.gap / 2;
       const pinY = config.world.width / config.pins.lines + l * config.pins.gap
       const pin = Bodies.circle(pinX, pinY, config.pins.size, {
         label: `pin-${i}`,
-        render: {
-          fillStyle: '#F5DCFF'
-        },
+        render: { fillStyle, visible },
         isStatic: true
       })
       pins.push(pin)
     }
   }
 
-  const bins: Body[] = []
+  const leftBins: Body[] = []
   for (let i = 0; i < config.bins.count; i++) {
-    const width = config.world.width / config.bins.count;
+    const width = (config.world.width  - 30) / config.bins.count;
     const bin = Bodies.rectangle(
-      width * i,
-      config.world.height - 20,
+      width * i  + 20,
+      config.world.height - 33,
       80,
-      5,
+      1,
       {
         label: `bin-${i}`,
-        angle: 1.5708,
-        render: { fillStyle },
+        angle: 1.44,
+        render: { fillStyle, visible },
         isStatic: true
       }
     )
-    bins.push(bin)
+    leftBins.push(bin)
+  }
+
+  const rightBins: Body[] = []
+  for (let i = 0; i < config.bins.count; i++) {
+    const width = (config.world.width  - 30) / config.bins.count;
+    const bin = Bodies.rectangle(
+      width * i  + 78,
+      config.world.height - 33,
+      80,
+      1,
+      {
+        label: `bin-${i}`,
+        angle: 1.72,
+        render: { fillStyle, visible },
+        isStatic: true
+      }
+    )
+    rightBins.push(bin)
   }
 
   const leftWallTriangles: Body[] = []
   for (let i = 0; i < config.pins.lines; i++) {
-    if (i % 2 == 0) {
+    if (i % 2 == 1) {
       continue;
     }
     const triangle = Bodies.polygon(
@@ -96,7 +112,7 @@ export const makeBoardBodies = () => {
         angle: 3.14159,
         label: `wall-triangle-left-${i}`,
         isStatic: true,
-        render: { fillStyle },
+        render: { fillStyle, visible },
       }
     )
     leftWallTriangles.push(triangle)
@@ -104,7 +120,7 @@ export const makeBoardBodies = () => {
 
   const rightWallTriangles: Body[] = []
   for (let i = 0; i < config.pins.lines; i++) {
-    if (i % 2 == 0) {
+    if (i % 2 == 1) {
       continue;
     }
     const triangle = Bodies.polygon(
@@ -115,13 +131,13 @@ export const makeBoardBodies = () => {
       {
         label: `wall-triangle-right-${i}`,
         isStatic: true,
-        render: { fillStyle },
+        render: { fillStyle, visible },
       }
     )
     rightWallTriangles.push(triangle)
   }
 
-  return [...bins, ...pins, ...leftWallTriangles, ...rightWallTriangles, leftWall, rightWall, floor]
+  return [ ...pins,...leftBins, ...rightBins, ...leftWallTriangles, ...rightWallTriangles, leftWall, rightWall, floor]
 }
 
 export const makeBall = (id: number) => {
@@ -129,17 +145,21 @@ export const makeBall = (id: number) => {
   const maxBallX = config.world.width - 50
 
   const ballX = random(minBallX, maxBallX)
-  const ballColor = id == 19 ? "#be7901" : "#E234d2"
+  const ballScale = 0.014
+
+  const ballColorMap = ['Green', 'Pink', 'Purple', 'Red']
   return Bodies.circle(ballX, 20, config.ball.size, {
     restitution: 1,
     friction: 0.5,
+    frictionAir: 0.05,
     label: `ball-${id}`,
     id: new Date().getTime(),
-    collisionFilter: {
-      group: -1
-    },
     render: {
-      fillStyle: ballColor
+      sprite: {
+        texture: `/arcade/plinko/${id == 19 ? ballColorMap[3] : ballColorMap[Math.floor(random(0, 3))]}Ball.png`,
+        xScale: ballScale,
+        yScale: ballScale
+      }
     },
     isStatic: false
   })
