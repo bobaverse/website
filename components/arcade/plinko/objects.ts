@@ -2,7 +2,6 @@
 import { Bodies, Body } from "matter-js";
 import config from "@/components/arcade/plinko/config";
 import { random } from "@/utils/random";
-import GreenBall from '@/assets/arcade/plinko/GreenBall.png';
 
 export const makeBoardBodies = () => {
   const fillStyle = '#FFF'
@@ -137,7 +136,16 @@ export const makeBoardBodies = () => {
     rightWallTriangles.push(triangle)
   }
 
-  return [ ...pins,...leftBins, ...rightBins, ...leftWallTriangles, ...rightWallTriangles, leftWall, rightWall, floor]
+  return [
+    ...pins,
+    ...leftBins,
+    ...rightBins,
+    ...leftWallTriangles,
+    ...rightWallTriangles,
+    leftWall,
+    rightWall,
+    floor
+  ]
 }
 
 export const makeBall = (id: number) => {
