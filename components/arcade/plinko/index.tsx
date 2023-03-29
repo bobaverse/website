@@ -153,7 +153,7 @@ const Game = () => {
           const finalBin = Math.floor(ball.position.x / binWidth);
           const value = bucketValues[finalBin];
           addResult(ball.label, value)
-          setTimeout(() => Composite.remove(engine.world, ball), 500)
+          setTimeout(() => Composite.remove(engine.world, ball), 1500)
         }
       }
     }
