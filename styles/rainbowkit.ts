@@ -4,7 +4,7 @@ import { AccentColorPreset } from "@rainbow-me/rainbowkit/dist/themes/baseTheme"
 const darkGrey = '#1A1B1F';
 
 const accentColors: Record<AccentColorPreset, any> = {
-  blue: { accentColor: 'rgba(255, 255, 255, 0.04)', accentColorForeground: '#fef2c5' },
+  blue: { accentColor: '#78FD00', accentColorForeground: '#000' },
   green: { accentColor: '#4BD166', accentColorForeground: darkGrey },
   orange: { accentColor: '#FF983D', accentColorForeground: darkGrey },
   pink: { accentColor: '#FF7AB8', accentColorForeground: darkGrey },
@@ -66,10 +66,10 @@ const rainbowkitTheme: Theme = {
     actionButtonSecondaryBackground: 'rgba(255, 255, 255, 0.08)',
     closeButton: 'rgba(224, 232, 255, 0.6)',
     closeButtonBackground: 'rgba(255, 255, 255, 0.08)',
-    connectButtonBackground: 'rgba(255, 255, 255, 0.04)',
+    connectButtonBackground: '#78FD00',
     connectButtonBackgroundError: '#FF494A',
-    connectButtonInnerBackground: 'rgba(255, 255, 255, 0.04)',
-    connectButtonText: '#fef2c5',
+    connectButtonInnerBackground: 'rgba(0, 0, 0, 0.04)',
+    connectButtonText: '#000',
     connectButtonTextError: '#FFF',
     connectionIndicator: '#adf4b1',
     downloadBottomCardBackground:
@@ -81,9 +81,9 @@ const rainbowkitTheme: Theme = {
     generalBorderDim: 'rgba(255, 255, 255, 0.04)',
     menuItemBackground: 'rgba(224, 232, 255, 0.1)',
     modalBackdrop: 'rgba(0, 0, 0, 0.5)',
-    modalBackground: 'rgba(64, 42, 8, 0.8)',
+    modalBackground: 'rgba(0, 0, 0, 0.8)',
     modalBorder: 'rgba(255, 255, 255, 0.08)',
-    modalText: '#fef2c5',
+    modalText: '#fff',
     modalTextDim: 'rgba(224, 232, 255, 0.3)',
     modalTextSecondary: 'rgba(255, 255, 255, 0.6)',
     profileAction: 'rgba(224, 232, 255, 0.1)',

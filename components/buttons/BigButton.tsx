@@ -9,10 +9,10 @@ interface Props {
 }
 const BigButton: FC<Props> = ({ href, text, icon, className = "" }) => {
   return (
-    <Link href={href} className={`flex h-40 w-40 bg-button rounded-[40px] ${className}`}>
+    <Link href={href} className={`flex h-40 w-40 bg-button rounded-[40px]  text-center ${className}`}>
       <div className="m-auto">
         {icon ? icon : null}
-        <span className="text-2xl">{text}</span>
+        <span className="text-2xl text-black font-bold">{text}</span>
       </div>
     </Link>
   );

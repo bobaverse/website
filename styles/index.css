@@ -18,9 +18,7 @@ body {
     height: 100%;
     overflow: hidden;
     @apply text-cream;
-    background-image: url('../public/Background.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
+    background: #000000 radial-gradient(100% 100% at 49.88% 0%, rgba(120, 253, 0, 0.2) 0%, rgba(0, 0, 0, 0) 100%) no-repeat;
 }
 
 body > :first-child {

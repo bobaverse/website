@@ -179,7 +179,7 @@ const Game = () => {
       </div>
       <button
         onClick={onPlay}
-        className="rounded-full bg-button py-2 font-bold disabled:bg-gray-500 "
+        className="rounded-full bg-button py-2 font-extrabold disabled:bg-gray-500 text-black"
         disabled={gameState == GameState.Started || gameState == GameState.Finalizing}
       >
         {buttonText[gameState]}

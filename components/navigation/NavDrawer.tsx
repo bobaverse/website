@@ -34,22 +34,22 @@ const NavDrawer: FC<Props> = ({ open, onClose }) => {
             </Link>
           </li>
           <li className="my-8">
-            <Link href="/profile">
+            <Link href="#">
               Profile
             </Link>
           </li>
           <li className="my-8">
-            <Link href="/leaderboards">
+            <Link href="#">
               Leaderboards
             </Link>
           </li>
           <li className="my-8">
-            <Link href="/about">
+            <Link href="#">
               About Us
             </Link>
           </li>
           <li className="my-8">
-            <Link href="/privacy">
+            <Link href="#">
               Privacy Policy
             </Link>
           </li>
