@@ -12,7 +12,7 @@ const BlockchainProvider: FC<PageProps> = ({ children }) => {
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider
         chains={chains}
-        appInfo={{ appName: "Tradescrow" }}
+        appInfo={{ appName: "BobaVerse" }}
         theme={rainbowkitTheme}
       >
         <div className="flex flex-col h-full">{children}</div>
