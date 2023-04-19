@@ -1,15 +1,10 @@
 import { Theme } from '@rainbow-me/rainbowkit';
 import { AccentColorPreset } from "@rainbow-me/rainbowkit/dist/themes/baseTheme";
 
-const darkGrey = '#1A1B1F';
+type AccentColor = 'teal' | 'mint';
 
-const accentColors: Record<AccentColorPreset, any> = {
-  blue: { accentColor: '#78FD00', accentColorForeground: '#000' },
-  green: { accentColor: '#4BD166', accentColorForeground: darkGrey },
-  orange: { accentColor: '#FF983D', accentColorForeground: darkGrey },
-  pink: { accentColor: '#FF7AB8', accentColorForeground: darkGrey },
-  purple: { accentColor: '#7A70FF', accentColorForeground: '#FFF' },
-  red: { accentColor: '#FF6257', accentColorForeground: '#FFF' },
+const accentColors: Partial<Record<AccentColorPreset | AccentColor, any>> = {
+  teal: { accentColor: '#64FFDA', accentColorForeground: '#000000', accentColorDark: '#26A69A' },
 };
 
 type RadiusScale = 'large' | 'medium' | 'small' | 'none';
@@ -59,19 +54,19 @@ const blurs: Record<Blurs, { modalOverlay: string }> = {
 const rainbowkitTheme: Theme = {
   blurs: { modalOverlay: blurs.large.modalOverlay },
   colors: {
-    accentColor: accentColors.blue.accentColor,
-    accentColorForeground: accentColors.blue.accentColorForeground,
+    accentColor: accentColors.teal.accentColor,
+    accentColorForeground: accentColors.teal.accentColorForeground,
     actionButtonBorder: 'rgba(255, 255, 255, 0.04)',
     actionButtonBorderMobile: 'rgba(255, 255, 255, 0.08)',
     actionButtonSecondaryBackground: 'rgba(255, 255, 255, 0.08)',
     closeButton: 'rgba(224, 232, 255, 0.6)',
     closeButtonBackground: 'rgba(255, 255, 255, 0.08)',
-    connectButtonBackground: '#78FD00',
+    connectButtonBackground: accentColors.teal.accentColor,
     connectButtonBackgroundError: '#FF494A',
     connectButtonInnerBackground: 'rgba(0, 0, 0, 0.04)',
     connectButtonText: '#000',
     connectButtonTextError: '#FFF',
-    connectionIndicator: '#adf4b1',
+    connectionIndicator: 'green',
     downloadBottomCardBackground:
       'linear-gradient(126deg, rgba(0, 0, 0, 0) 9.49%, rgba(120, 120, 120, 0.2) 71.04%), #1A1B1F',
     downloadTopCardBackground:
@@ -81,19 +76,19 @@ const rainbowkitTheme: Theme = {
     generalBorderDim: 'rgba(255, 255, 255, 0.04)',
     menuItemBackground: 'rgba(224, 232, 255, 0.1)',
     modalBackdrop: 'rgba(0, 0, 0, 0.5)',
-    modalBackground: 'rgba(0, 0, 0, 0.8)',
+    modalBackground: '#372B1D',
     modalBorder: 'rgba(255, 255, 255, 0.08)',
     modalText: '#fff',
     modalTextDim: 'rgba(224, 232, 255, 0.3)',
     modalTextSecondary: 'rgba(255, 255, 255, 0.6)',
-    profileAction: 'rgba(224, 232, 255, 0.1)',
+    profileAction: '#26A69A',
     profileActionHover: 'rgba(224, 232, 255, 0.2)',
     profileForeground: 'rgba(224, 232, 255, 0.05)',
     selectedOptionBorder: 'rgba(224, 232, 255, 0.1)',
     standby: '#FFD641',
   },
   fonts: {
-    body: 'Eczar',
+    body: 'Roboto',
   },
   radii: {
     actionButton: radiusScales.large.actionButton,

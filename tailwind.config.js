@@ -20,14 +20,30 @@ module.exports = {
         teal: "#3da9ad",
         taffy: "#f8c463",
         caramel: "#d7942f",
-        mint: "#adf4b1",
+        seafoam: "#26A69A",
         chocolate: "#402A08",
         "modal-bg": "rgba(0, 0, 0, 0.8)",
       },
       backgroundColor: {
-        button: "#78FD00"
+        "teal-light": "#64FFDA",
+        teal: "#89D1C3",
+        seafoam: "#26A69A",
+        taffy: "#CAA378",
+        chocolate: "#372B1D",
+        gold: "#F2B134",
+        silver: "#C0C0C0",
+        bronze: "#A67C52",
+        "white-unhovered": "rgba(0, 0, 0, 0.05)",
+        "white-hovered": "rgba(0, 0, 0, 0.1)",
+      },
+      height: {
+        "full-w-footer": "calc(theme('height.full') - 96px)",
+      },
+      boxShadow: {
+        "3xl": '0px 5px 26px 4px rgba(0, 0, 0, 0.12), 0px 14px 21px 2px rgba(0, 0, 0, 0.14), 0px 7px 9px -4px rgba(0, 0, 0, 0.2)'
       }
     },
+
   },
   plugins: [],
 };

@@ -10,6 +10,7 @@ import { makeBall, makeBoardBodies } from "@/components/arcade/plinko/objects";
 import PlinkoBoard from '@/assets/arcade/plinko/PlinkoBoard.png';
 import PlinkoCups from '@/assets/arcade/plinko/PlinkoCups.png';
 import Image from "next/image";
+import Button from "@/components/buttons/Button";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -69,15 +70,15 @@ const Game = () => {
   }
 
   useEffect(() => {
-    if (gameState == GameState.Started && Object.keys(results).length == 19) {
+    if (gameState === GameState.Started && Object.keys(results).length === 19) {
       setGameState(GameState.SureUp);
       return;
     }
-    if (gameState == GameState.Finalizing && Object.keys(results).length == 20) {
+    if (gameState === GameState.Finalizing && Object.keys(results).length === 20) {
       setGameState(GameState.Finished);
       return;
     }
-    if (gameState == GameState.Finished) {
+    if (gameState === GameState.Finished) {
       const tempScore = score() - results['ball-19'];
       const finalBall = finalScore - tempScore;
       if (results['ball-19'] !== finalBall) {
@@ -90,7 +91,7 @@ const Game = () => {
 
   useEffect(() => {
     let interval: NodeJS.Timer;
-    if (gameState == GameState.Finalizing && Object.keys(results).length == 19) {
+    if (gameState === GameState.Finalizing && Object.keys(results).length === 19) {
       interval = setInterval(() => {
         if (!('ball-19' in results)) {
           setBucketValues(Array.from(Array(9)).map(() => Math.floor(random(10, 100))))
@@ -161,14 +162,11 @@ const Game = () => {
 
   Events.on(engine, "collisionStart", onBodyCollisionStart);
   return (
-    <div className="flex flex-col justify-center justify-center gap-4">
+    <div className="flex flex-col justify-center gap-y-2">
       <div ref={boxRef} className="relative w-[650px] h-[750px]">
         <Image src={PlinkoBoard} alt="plinkoBoard" width={config.world.width} />
-        <Image src={PlinkoCups} alt="plinkoCups" width={config.world.width} className="absolute top-0 z-10" />
+        <Image src={PlinkoCups} alt="plinkoCups" width={config.world.width} className="absolute top-0 z-10 opacity-20" />
         <canvas id="plinkoCanvas" ref={canvasRef} className="absolute left-0 top-0" />
-        <div className="absolute top-[10px] left-[20px] z-20 pointer-events-none">
-          <span>Score: {score()}</span>
-        </div>
         <div className="absolute top-[700px] w-full px-3 z-20 flex pointer-events-none">
           {bucketValues.map((v, i) => (
             <div key={i} className="w-[72px] text-center">
@@ -177,13 +175,17 @@ const Game = () => {
           ))}
         </div>
       </div>
-      <button
+      <div className="text-black font-bold flex justify-between">
+        <span>Current Score: {score()}</span>
+        <span>High Score: {123}</span>
+      </div>
+      <Button
         onClick={onPlay}
-        className="rounded-full bg-button py-2 font-extrabold disabled:bg-gray-500 text-black"
-        disabled={gameState == GameState.Started || gameState == GameState.Finalizing}
+        className="font-bold disabled:bg-gray-500 text-black"
+        disabled={gameState === GameState.Started || gameState === GameState.Finalizing}
       >
         {buttonText[gameState]}
-      </button>
+      </Button>
 
     </div>
   )
