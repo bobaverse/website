@@ -1,16 +1,28 @@
 'use client';
-import { Body, Composite, Engine, Events, IEventCollision, Render, Runner } from 'matter-js'
-import { useEffect, useRef, useState } from 'react'
-import { useArcadeStore } from '@/components/store/arcade'
-import { random } from 'utils/random'
-
-import config from './config'
-import { GameState } from "@/components/store/types";
-import { makeBall, makeBoardBodies } from "@/components/arcade/plinko/objects";
+import { BobaVerseArcadeABI } from "@/assets/abi/BobaVerseArcade";
 import PlinkoBoard from '@/assets/arcade/plinko/PlinkoBoard.png';
 import PlinkoCups from '@/assets/arcade/plinko/PlinkoCups.png';
-import Image from "next/image";
+import { makeBall, makeBoardBodies } from "@/components/arcade/plinko/objects";
+import PlinkoHighScore from "@/components/arcade/plinko/PlinkoHighScore";
 import Button from "@/components/buttons/Button";
+import { useArcadeStore } from '@/components/store/arcade'
+import { GameState } from "@/components/store/types";
+import { ArcadeAddressMap } from "@/utils/blockchain/addresses";
+import { utils } from "ethers";
+import { Body, Composite, Engine, Events, IEventCollision, Render, Runner } from 'matter-js'
+import Image from "next/image";
+import { useEffect, useRef, useState } from 'react'
+import { random } from 'utils/random'
+import {
+  useAccount,
+  useContractEvent,
+  useContractWrite,
+  useNetwork,
+  usePrepareContractWrite,
+  useWaitForTransaction
+} from "wagmi";
+
+import config from './config';
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -35,10 +47,11 @@ const Game = () => {
   const clearResults = useArcadeStore(state => state.clearResults);
   const gameState = useArcadeStore(state => state.state);
   const setGameState = useArcadeStore(state => state.setState);
-  
+  const { address } = useAccount();
+  const { chain } = useNetwork();
+  const [finalScore, setFinalScore] = useState<number>(0);
   const [engine] = useState(Engine.create());
   engine.gravity.y = config.engine.gravity;
-  const finalScore = 169;
 
   const score = () => Object.values(results).reduce((o, a) => { o+=a; return o; }, 0)
 
@@ -64,6 +77,7 @@ const Game = () => {
           }
         });
         clearResults();
+        setFinalScore(0);
         setBucketValues([1, 3, 5, 7, 9, 7, 5, 3, 1]);
         setGameState(GameState.Ready)
     }
@@ -160,6 +174,41 @@ const Game = () => {
     }
   }
 
+
+
+  const {
+    config: preparePlayConfig,
+    isError: isPreparePlayError,
+    error: preparePlayError,
+    isSuccess: preparePlaySuccess
+  } = usePrepareContractWrite({
+    address: ArcadeAddressMap[chain?.id || 0],
+    abi: BobaVerseArcadeABI,
+    functionName: 'playPlinko',
+    overrides: {
+      value: utils.parseEther('0.01')
+    }
+  })
+
+  const {
+    data: writePlayData,
+    isLoading: writePlayIsLoading,
+    isSuccess: writePlayIsSuccess,
+    write: writePlay
+  } = useContractWrite(preparePlayConfig)
+
+  useContractEvent({
+    address: ArcadeAddressMap[chain?.id || 0],
+    abi: BobaVerseArcadeABI,
+    eventName: 'PlinkoResult',
+    listener: (sender, ballLocations, score) => {
+      if (sender === address) {
+        setFinalScore(score.toNumber())
+        onPlay();
+      }
+    }
+  })
+
   Events.on(engine, "collisionStart", onBodyCollisionStart);
   return (
     <div className="flex flex-col justify-center gap-y-2">
@@ -177,12 +226,12 @@ const Game = () => {
       </div>
       <div className="text-black font-bold flex justify-between">
         <span>Current Score: {score()}</span>
-        <span>High Score: {123}</span>
+        <PlinkoHighScore />
       </div>
       <Button
-        onClick={onPlay}
+        onClick={gameState === GameState.Ready ? writePlay : onPlay}
         className="font-bold disabled:bg-gray-500 text-black"
-        disabled={gameState === GameState.Started || gameState === GameState.Finalizing}
+        disabled={gameState === GameState.Ready ? !writePlay : gameState === GameState.Started || gameState === GameState.Finalizing}
       >
         {buttonText[gameState]}
       </Button>

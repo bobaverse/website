@@ -1,4 +1,5 @@
 'use client';
+import CurrentSeasonRanks from "@/components/leaderboards/CurrentSeasonRanks";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import React, { FC, ReactNode, SyntheticEvent, useState } from "react";
@@ -49,8 +50,6 @@ const LeaderboardTabs: FC<LeaderboardTabsProps> = () => {
     setValue(newValue);
   };
 
-  const rankMap = (i: number) => (i === 0 ? 'bg-gold' : i === 1 ? 'bg-silver' : i === 2 ? 'bg-bronze' : '');
-
   return (
     <ThemeProvider theme={theme}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -100,47 +99,7 @@ const LeaderboardTabs: FC<LeaderboardTabsProps> = () => {
                     shouldDisableYear={(year) => year.isBefore('')}
                   />
               </div>
-                <TableContainer>
-                  <Table sx={{ '& .MuiTableCell-root': { borderColor: 'transparent' } }}>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell className="py-2 pt-4 w-[60px]">Rank</TableCell>
-                        <TableCell className="py-2 pt-4">Player</TableCell>
-                        <TableCell className="pb-2 pt-4" align="right">Score</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {Array.from({ length: 10 }).map((_, index) => (
-                        <TableRow key={index}>
-                          <TableCell className="py-1 w-[60px]">
-                            <div
-                              className={"w-[32px] h-[32px] lg:w-[48px] lg:h-[48px] rounded-md flex justify-center items-center " + rankMap(index)}
-                            >
-                              <span className="text-3xl">{index + 1}</span>
-                            </div>
-                          </TableCell>
-                          <TableCell className="py-1">
-                            <div className="flex w-[32px] h-[32px] lg:w-[48px] lg:h-[48px]">
-                              <Image
-                                src="https://i.imgur.com/MgYBxfS.jpeg"
-                                alt="profile pic"
-                                className="rounded-full mr-2"
-                                width={48}
-                                height={48}
-                              />
-                              <div className="flex flex-col">
-                                <span className="text-md lg:text-xl font-semibold">TraderByDay</span>
-                                <span className="text-xs lg:text-sm text-seafoam">0xD34D...833F</span>
-                              </div>
-                            </div>
-
-                          </TableCell>
-                          <TableCell className="py-1 text-xl" align="right">{(10 - index) * 11}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
+                <CurrentSeasonRanks month={(date && date.month() + 1) || 5} year={date?.year() || 2023} />
               </div>)}
           </div>
         </div>

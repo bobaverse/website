@@ -1,4 +1,6 @@
 
+import MyRank from "@/components/leaderboards/MyRank";
+
 // leaderboard Page
 import Image from "next/image";
 import Card from "@/components/containers/Card";
@@ -11,16 +13,7 @@ const Page = async () => {
       <span className="text-h1 mb-4">Leaderboards</span>
       <div className="flex flex-col lg:flex-row gap-4 w-full justify-center">
         <div className="flex flex-col gap-y-4">
-          <Card className="bg-seafoam max-w-sm">
-            <div className="flex justify-between">
-              <span>My Rank</span>
-              <span>My Score</span>
-            </div>
-            <div className="flex justify-between uppercase text-lg  font-semibold">
-              <span>1st Place</span>
-              <span>95</span>
-            </div>
-          </Card>
+          <MyRank />
           <Card className="bg-taffy text-center items-center max-w-sm">
             <div className="flex flex-col space-y-4">
               <span className="text-2xl font-normal">First Place Last Month</span>
