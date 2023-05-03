@@ -301,7 +301,13 @@ const Game = () => {
         className="font-bold disabled:bg-gray-500 text-black"
         disabled={gameState === GameState.Ready ? (isPreparePlayError || !address) : gameState === GameState.Started || gameState === GameState.Finalizing}
       >
-        {isPreparePlayError ? preparePlayError?.message : address ? buttonText[gameState] : 'Not Logged In'}
+        {isPreparePlayError
+          ? preparePlayError?.message.startsWith('cannot estimate gas')
+            ? 'Contract Disabled'
+            : preparePlayError?.message
+          : address
+            ? buttonText[gameState]
+            : 'Not Logged In'}
       </Button>
     </div>
   )
