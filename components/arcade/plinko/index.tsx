@@ -50,16 +50,13 @@ const Game = () => {
   const { address } = useAccount();
   const { chain } = useNetwork();
   const [finalScore, setFinalScore] = useState<number>(0);
+  const [finalBallX, setFinalBallX] = useState<number>(50);
   const [engine] = useState(Engine.create());
 
   const score = () => Object.values(results).reduce((o, a) => { o+=a; return o; }, 0)
 
   const onPlay = async () => {
     switch (gameState) {
-      case GameState.Ready:
-        setGameState(GameState.Started);
-        await addBalls(19);
-        break;
       case GameState.SureUp:
         Composite.allBodies(engine.world).forEach((body) => {
           if (body.label.startsWith('ball')) {
@@ -67,7 +64,8 @@ const Game = () => {
           }
         });
         setGameState(GameState.Finalizing);
-        await addBalls(1);
+        await addBalls(1, [finalBallX]);
+        setFinalBallX(50);
         break;
       case GameState.Finished:
         Composite.allBodies(engine.world).forEach((body) => {
@@ -116,12 +114,13 @@ const Game = () => {
     }
   }, [gameState, results]);
 
-  const addBalls = async (count: number) => {
+  const addBalls = async (count: number, locations: number[]) => {
     if (!boxRef.current) {
       return;
     }
+
     for (let i = 0; i < count; i++) {
-      const ball = makeBall(count === 1 ? 19 : i, boxRef.current.clientWidth)
+      const ball = makeBall(count === 1 ? 19 : i, boxRef.current.clientWidth, locations[i])
       setBalls([...balls, ball])
       Composite.add(engine.world, ball)
       await sleep(100)
@@ -179,13 +178,6 @@ const Game = () => {
     }
   }, [engine]);
 
-  useEffect(() => {
-    if (!canvasRef.current || !boxRef.current) {
-      return;
-    }
-    console.log(boxRef?.current?.clientWidth, boxRef?.current?.clientHeight)
-    Composite.add(engine.world, makeBoardBodies(boxRef.current.clientWidth, boxRef.current.clientHeight));
-  }, [boxRef.current]);
 
   const onBodyCollisionStart = async (event: IEventCollision<Engine>) => {
     const pairs = event.pairs
@@ -260,8 +252,10 @@ const Game = () => {
     listener: (sender, ballLocations, score) => {
       if (sender === address) {
         setFinalScore(score.toNumber());
+        setGameState(GameState.Started);
         Loading.remove();
-        onPlay();
+        setFinalBallX(ballLocations[ballLocations.length - 1].toNumber());
+        addBalls(ballLocations.length - 1, ballLocations.map((location: BigNumber) => location.toNumber()));
       }
     }
   })

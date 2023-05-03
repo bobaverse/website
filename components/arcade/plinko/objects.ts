@@ -147,12 +147,13 @@ export const makeBoardBodies = (worldWidth: number, worldHeight: number) => {
   ]
 }
 
-export const makeBall = (id: number, worldWidth: number, ballScale: number = 0.014) => {
-  const minBallX = 50
-  const maxBallX = worldWidth - 50
-
-  const ballX = random(minBallX, maxBallX)
-
+export const makeBall = (id: number, worldWidth: number, ballLocation: number) => {
+  const safeZone = worldWidth - (worldWidth * 0.05);
+  let ballX = ballLocation * safeZone / 200 + (worldWidth * 0.025)
+  // Invert every other ball;
+  if (id % 2 === 0) {
+    ballX = worldWidth - ballX;
+  }
   const ballColorMap = ['Green', 'Pink', 'Purple', 'Red']
   return Bodies.circle(ballX, 20, config.ball.size, {
     restitution: 1,
@@ -163,8 +164,8 @@ export const makeBall = (id: number, worldWidth: number, ballScale: number = 0.0
     render: {
       sprite: {
         texture: `/arcade/plinko/${id === 19 ? ballColorMap[3] : ballColorMap[Math.floor(random(0, 3))]}Ball.png`,
-        xScale: ballScale * worldWidth / 650,
-        yScale: ballScale * worldWidth / 650
+        xScale: 0.014 * worldWidth / 650,
+        yScale: 0.014 * worldWidth / 650
       }
     },
     isStatic: false
