@@ -41,6 +41,20 @@ module.exports = {
       },
       boxShadow: {
         "3xl": '0px 5px 26px 4px rgba(0, 0, 0, 0.12), 0px 14px 21px 2px rgba(0, 0, 0, 0.14), 0px 7px 9px -4px rgba(0, 0, 0, 0.2)'
+      },
+      width: {
+        cupNumbers: 'calc(100% - (100% * 0.02))'
+      },
+      padding: {
+        'cupNumbers': '2%',
+      },
+      spacing: {
+        'cupNumbers': '3.5%',
+        'cups': '9.2%',
+      },
+      fontSize: {
+        cupsTall: 'calc(100vw * 0.03)',
+        cupsWide: 'min(calc(100vw * 0.03), 29.7px)',
       }
     },
 

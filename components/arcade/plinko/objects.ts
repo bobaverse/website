@@ -3,15 +3,15 @@ import { Bodies, Body } from "matter-js";
 import config from "@/components/arcade/plinko/config";
 import { random } from "@/utils/random";
 
-export const makeBoardBodies = () => {
+export const makeBoardBodies = (worldWidth: number, worldHeight: number) => {
   const fillStyle = '#FFF'
   const visible = false;
   // noinspection JSSuspiciousNameCombination
   const leftWall = Bodies.rectangle(
-    3,
-    config.world.height / 2,
-    config.world.height,
-    20,
+    worldWidth * 0.01,
+    worldHeight / 2,
+    worldHeight,
+    worldWidth * 0.02,
     {
       angle: 1.5708,
       render: { fillStyle, visible },
@@ -21,22 +21,22 @@ export const makeBoardBodies = () => {
 
 // noinspection JSSuspiciousNameCombination
   const rightWall = Bodies.rectangle(
-    config.world.width - 3,
-    config.world.height / 2,
-    config.world.height,
-    20,
+    worldWidth - (worldWidth * 0.01),
+    worldHeight / 2,
+    worldHeight,
+    worldWidth * 0.02,
     {
-      angle: 1.5708,
+      angle: 4.71239,
       render: { fillStyle, visible },
       isStatic: true
     }
   )
 
   const floor = Bodies.rectangle(
-    0,
-    config.world.height - 6,
-    config.world.width * 10,
-    20,
+    worldWidth / 2,
+    worldHeight - (worldHeight * 0.02 / 2),
+    worldWidth,
+    worldHeight * 0.02,
     {
       label: 'floor',
       render: { fillStyle, visible },
@@ -45,14 +45,16 @@ export const makeBoardBodies = () => {
   )
 
   const pins: Body[] = []
+  const pinGap = config.pins.gap * worldWidth / 650;
   for (let l = 0; l < config.pins.lines; l++) {
-    const even = l % 2 == 0;
+    const even = l % 2 === 0;
     const ppl = even ? config.pins.min : config.pins.max;
-    const lineWidth = ppl * config.pins.gap;
+    const lineWidth = ppl * pinGap;
     for (let i = 0; i < ppl; i++) {
-      const pinX = config.world.width / 2 - lineWidth / 2 + i * config.pins.gap + config.pins.gap / 2;
-      const pinY = config.world.width / config.pins.lines + l * config.pins.gap
-      const pin = Bodies.circle(pinX, pinY, config.pins.size, {
+      // noinspection OverlyComplexArithmeticExpressionJS
+      const pinX = worldWidth / 2 - lineWidth / 2 + i * pinGap + pinGap / 2;
+      const pinY = worldWidth / config.pins.lines + l * pinGap
+      const pin = Bodies.circle(pinX, pinY, config.pins.size * worldWidth / 650, {
         label: `pin-${i}`,
         render: { fillStyle, visible },
         isStatic: true
@@ -63,11 +65,10 @@ export const makeBoardBodies = () => {
 
   const leftBins: Body[] = []
   for (let i = 0; i < config.bins.count; i++) {
-    const width = (config.world.width  - 30) / config.bins.count;
     const bin = Bodies.rectangle(
-      width * i  + 20,
-      config.world.height - 33,
-      80,
+      (worldWidth * 0.1066) * i + (worldWidth * 0.03),
+      worldHeight - (worldHeight * 0.0975 / 2),
+      worldHeight * 0.095,
       1,
       {
         label: `bin-${i}`,
@@ -81,11 +82,10 @@ export const makeBoardBodies = () => {
 
   const rightBins: Body[] = []
   for (let i = 0; i < config.bins.count; i++) {
-    const width = (config.world.width  - 30) / config.bins.count;
     const bin = Bodies.rectangle(
-      width * i  + 78,
-      config.world.height - 33,
-      80,
+      (worldWidth * 0.1066) * i + (worldWidth * 0.1166),
+      worldHeight - (worldHeight * 0.0975 / 2),
+      worldHeight * 0.095,
       1,
       {
         label: `bin-${i}`,
@@ -98,42 +98,41 @@ export const makeBoardBodies = () => {
   }
 
   const leftWallTriangles: Body[] = []
-  for (let i = 0; i < config.pins.lines; i++) {
-    if (i % 2 == 1) {
-      continue;
+  for (let i = 0; i < config.pins.lines - 2; i++) {
+    if (i % 2 === 0) {
+      const triangle = Bodies.polygon(
+        worldWidth * 0.025,
+        worldWidth / config.pins.lines + i * pinGap,
+        3,
+        worldWidth * 0.04,
+        {
+          angle: 3.14159,
+          label: `wall-triangle-left-${i}`,
+          isStatic: true,
+          render: { fillStyle, visible },
+        }
+      )
+      leftWallTriangles.push(triangle)
     }
-    const triangle = Bodies.polygon(
-      15,
-      config.world.width / config.pins.lines + i * config.pins.gap,
-      3,
-      25,
-      {
-        angle: 3.14159,
-        label: `wall-triangle-left-${i}`,
-        isStatic: true,
-        render: { fillStyle, visible },
-      }
-    )
-    leftWallTriangles.push(triangle)
   }
 
   const rightWallTriangles: Body[] = []
-  for (let i = 0; i < config.pins.lines; i++) {
-    if (i % 2 == 1) {
-      continue;
+  for (let i = 0; i < config.pins.lines - 2; i++) {
+    if (i % 2 === 0) {
+      const triangle = Bodies.polygon(
+        worldWidth - (worldWidth * 0.025),
+        worldWidth / config.pins.lines + i * pinGap,
+        3,
+        worldWidth * 0.04,
+        {
+          label: `wall-triangle-right-${i}`,
+          isStatic: true,
+          render: { fillStyle, visible },
+        }
+      )
+      rightWallTriangles.push(triangle)
     }
-    const triangle = Bodies.polygon(
-      config.world.width - 15,
-      config.world.width / config.pins.lines + i * config.pins.gap,
-      3,
-      25,
-      {
-        label: `wall-triangle-right-${i}`,
-        isStatic: true,
-        render: { fillStyle, visible },
-      }
-    )
-    rightWallTriangles.push(triangle)
+
   }
 
   return [
@@ -148,12 +147,11 @@ export const makeBoardBodies = () => {
   ]
 }
 
-export const makeBall = (id: number) => {
+export const makeBall = (id: number, worldWidth: number, ballScale: number = 0.014) => {
   const minBallX = 50
-  const maxBallX = config.world.width - 50
+  const maxBallX = worldWidth - 50
 
   const ballX = random(minBallX, maxBallX)
-  const ballScale = 0.014
 
   const ballColorMap = ['Green', 'Pink', 'Purple', 'Red']
   return Bodies.circle(ballX, 20, config.ball.size, {
@@ -164,11 +162,18 @@ export const makeBall = (id: number) => {
     id: new Date().getTime(),
     render: {
       sprite: {
-        texture: `/arcade/plinko/${id == 19 ? ballColorMap[3] : ballColorMap[Math.floor(random(0, 3))]}Ball.png`,
-        xScale: ballScale,
-        yScale: ballScale
+        texture: `/arcade/plinko/${id === 19 ? ballColorMap[3] : ballColorMap[Math.floor(random(0, 3))]}Ball.png`,
+        xScale: ballScale * worldWidth / 650,
+        yScale: ballScale * worldWidth / 650
       }
     },
     isStatic: false
   })
+}
+
+export const ballImagesMap = {
+  green: '/arcade/plinko/GreenBall.png',
+  pink: '/arcade/plinko/PinkBall.png',
+  purple: '/arcade/plinko/PurpleBall.png',
+  red: '/arcade/plinko/RedBall.png',
 }

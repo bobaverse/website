@@ -19,7 +19,6 @@ const PlinkoHighScore = () => {
     functionName: 'getLeaderboardFor',
     args: [0, BigNumber.from(now.getFullYear()), BigNumber.from(now.getMonth() + 1)],
     onSuccess: ([addresses, scores]) => {
-      console.log("SUCCESS!", 0, now.getFullYear(), now.getMonth() + 1, addresses, scores)
       const best = scores.reduce((o, a) => {
         if (a.toNumber() > o) {
           o = a.toNumber()

@@ -7,7 +7,7 @@ import { BigNumber } from "ethers";
 import { useState } from "react";
 import { useAccount, useContractRead, useNetwork } from "wagmi";
 
-const MyRank = () => {
+const MyRankCard = () => {
   const { address } = useAccount();
   const { chain } = useNetwork();
   const [myStats, setMyStats] = useState<[number, number]>([-1, -1]);
@@ -59,4 +59,4 @@ const MyRank = () => {
   )
 }
 
-export default MyRank;
+export default MyRankCard;

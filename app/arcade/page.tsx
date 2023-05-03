@@ -2,7 +2,6 @@ import { FC } from "react";
 import ImgCardButton from "@/components/buttons/ImgCardButton";
 
 const Arcade: FC = () => {
-
   const games = [
     'Plinko',
   ]

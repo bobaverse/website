@@ -1,5 +1,5 @@
 
-import MyRank from "@/components/leaderboards/MyRank";
+import MyRankCard from "@/components/leaderboards/MyRankCard";
 
 // leaderboard Page
 import Image from "next/image";
@@ -13,7 +13,7 @@ const Page = async () => {
       <span className="text-h1 mb-4">Leaderboards</span>
       <div className="flex flex-col lg:flex-row gap-4 w-full justify-center">
         <div className="flex flex-col gap-y-4">
-          <MyRank />
+          <MyRankCard />
           <Card className="bg-taffy text-center items-center max-w-sm">
             <div className="flex flex-col space-y-4">
               <span className="text-2xl font-normal">First Place Last Month</span>
