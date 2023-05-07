@@ -105,7 +105,7 @@ const Game = () => {
     if (gameState === GameState.Finalizing && Object.keys(results).length === 19) {
       interval = setInterval(() => {
         if (!('ball-19' in results)) {
-          setBucketValues(Array.from(Array(9)).map(() => Math.floor(random(10, 100))))
+          setBucketValues(Array.from(Array(9)).map(() => Math.floor(random(-100, 100))))
         }
       }, 100)
     }
