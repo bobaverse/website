@@ -1,20 +1,30 @@
+import Button2 from "@/components/buttons/Button2";
+import { AvatarIcon, JoystickIcon, TrophyIcon } from "@/components/icons";
 import Image from "next/image";
-import { FC } from "react";
-import Logo from "@/public/Logo.png";
-import ImgCardButton from "@/components/buttons/ImgCardButton";
+import GameControllerGridPNG from "@/assets/game-controller-grid.png";
 
-const Home: FC = () => {
-
+const Home = () => {
   return (
-    <div className="flex flex-col h-full content-center gap-y-4 items-center lg:justify-center">
-      <div className="flex flex-col gap-4 content-center items-center mb-8 mt-5 lg:mt-0">
-        <Image src={Logo} alt="logo" height={250} className="h-[150px] lg:h-[250px] w-[130px] lg:w-[218px]" priority />
-        <span className="text-h1 text-center font-normal">Welcome to the BobaVerse</span>
-      </div>
-      <div className="grid grid-flow-row gap-5 grid-cols-1 grid-rows-3 items-center lg:grid-cols-3 lg:grid-rows-1 lg:gap-20">
-        <ImgCardButton title="Arcade" href="/arcade" />
-        <ImgCardButton title="Profile" href="/profile"  />
-        <ImgCardButton title="Leaderboards" href="/leaderboards" />
+    <div className="flex flex-col lg:flex-row-reverse h-full relative justify-center content-center items-center ">
+      <Image
+        src={GameControllerGridPNG}
+        alt="controller"
+        className="max-w-sm sm:max-w-2xl md:max-w-3xl xl:max-w-5xl 2xl:max-w-7xl"
+        priority
+      />
+      <div className="z-10 flex flex-col items-center gap-8 -mt-20 lg:mt-0 lg:-mr-40 xl:-mr-56 2xl:-mr-72">
+        <div>
+          <h4>Welcome to the</h4>
+          <h1>
+            <b className="text-boba-green">BOBA</b>
+            VERSE
+          </h1>
+        </div>
+        <div className="flex flex-col gap-4 w-fit lg:grid lg:grid-cols-3 lg:gap-8">
+          <Button2 text="Arcade" icon={JoystickIcon} href="/arcade" />
+          <Button2 text="Profile" icon={AvatarIcon} href="/profile" />
+          <Button2 text="Rankings" icon={TrophyIcon} href="/rankings" />
+        </div>
       </div>
     </div>
   );

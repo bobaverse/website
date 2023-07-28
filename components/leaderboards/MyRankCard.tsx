@@ -2,8 +2,7 @@
 import { BobaVerseArcadeABI } from "@/assets/abi/BobaVerseArcade";
 import Card from "@/components/containers/Card";
 import { ArcadeAddressMap } from "@/utils/blockchain/addresses";
-import { bobaAvax } from "@/utils/blockchain/chains";
-import { BigNumber } from "ethers";
+import { bobaEth } from "@/utils/blockchain/chains";
 import { useState } from "react";
 import { useAccount, useContractRead, useNetwork } from "wagmi";
 
@@ -15,17 +14,17 @@ const MyRankCard = () => {
   const now = new Date();
 
   useContractRead({
-    address: ArcadeAddressMap[chain?.id || bobaAvax.id],
+    address: ArcadeAddressMap[chain?.id || bobaEth.id],
     abi: BobaVerseArcadeABI,
     functionName: 'getLeaderboardFor',
-    args: [0, BigNumber.from(now.getFullYear()), BigNumber.from(now.getMonth() + 1)],
+    args: [0, BigInt(now.getFullYear()), BigInt(now.getMonth() + 1)],
     enabled: !!address,
     onSuccess: ([addresses, scores]) => {
       if (!address) {
         return;
       }
       const ranks = addresses
-        .map((a, i) => [a, scores[i].toNumber()] as [string, number])
+        .map((a, i) => [a, Number(scores[i])] as [string, number])
         .sort((a, b) => b[1] - a[1])
         .reduce((o, a, i) => {
           o[a[0]] = {

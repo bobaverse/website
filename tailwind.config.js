@@ -23,6 +23,11 @@ module.exports = {
         seafoam: "#26A69A",
         chocolate: "#402A08",
         "modal-bg": "rgba(0, 0, 0, 0.8)",
+        boba: {
+          grey: "#2D2D2D",
+          green: "#AEDB01",
+          "light-gray": "#545454",
+        }
       },
       backgroundColor: {
         "teal-light": "#64FFDA",
@@ -55,9 +60,12 @@ module.exports = {
       fontSize: {
         cupsTall: 'calc(100vw * 0.03)',
         cupsWide: 'min(calc(100vw * 0.03), 29.7px)',
+      },
+      fontFamily: {
+        gotham: ['var(--font-gotham)'],
       }
     },
 
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/forms')],
 };

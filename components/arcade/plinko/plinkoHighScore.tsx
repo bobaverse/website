@@ -2,8 +2,8 @@
 
 import { BobaVerseArcadeABI } from "@/assets/abi/BobaVerseArcade";
 import { ArcadeAddressMap } from "@/utils/blockchain/addresses";
-import { bobaAvax } from "@/utils/blockchain/chains";
-import { BigNumber } from "ethers";
+import { bobaEth } from "@/utils/blockchain/chains";
+
 import { useState } from "react";
 import { useContractEvent, useContractRead, useNetwork } from "wagmi";
 
@@ -14,14 +14,14 @@ const PlinkoHighScore = () => {
   const now = new Date();
 
   useContractRead({
-    address: ArcadeAddressMap[chain?.id || bobaAvax.id],
+    address: ArcadeAddressMap[chain?.id || bobaEth.id],
     abi: BobaVerseArcadeABI,
     functionName: 'getLeaderboardFor',
-    args: [0, BigNumber.from(now.getFullYear()), BigNumber.from(now.getMonth() + 1)],
+    args: [0, BigInt(now.getFullYear()), BigInt(now.getMonth() + 1)],
     onSuccess: ([addresses, scores]) => {
       const best = scores.reduce((o, a) => {
-        if (a.toNumber() > o) {
-          o = a.toNumber()
+        if (Number(a) > o) {
+          o = Number(a)
         }
         return o;
       }, 0);
@@ -32,18 +32,27 @@ const PlinkoHighScore = () => {
   })
 
   useContractEvent({
-    address: ArcadeAddressMap[chain?.id || bobaAvax.id],
+    address: ArcadeAddressMap[chain?.id || bobaEth.id],
     abi: BobaVerseArcadeABI,
     eventName: 'PlinkoResult',
-    listener: (sender, ballLocations, score) => {
-      const n = score.toNumber();
-      if (n > highScore) {
-        setHighScore(n);
+    listener(log) {
+      for (const l of log) {
+        const n = Number(l.args.score || 0);
+        if (n > highScore) {
+          setHighScore(n);
+        }
       }
     }
   })
   return (
-    <span>High Score: {highScore}</span>
+    <>
+      <span className="col-span-2 w-full bg-[#4A4A4A] py-4 rounded-xl shadow-2xl font-medium text-center">
+        Personal Season Highscore:
+      </span>
+      <span className="w-full bg-[#4A4A4A] py-4 rounded-xl shadow-2xl font-medium text-center">
+        {highScore}
+      </span>
+    </>
   )
 }
 

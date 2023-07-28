@@ -4,7 +4,7 @@ import { AccentColorPreset } from "@rainbow-me/rainbowkit/dist/themes/baseTheme"
 type AccentColor = 'teal' | 'mint';
 
 const accentColors: Partial<Record<AccentColorPreset | AccentColor, any>> = {
-  teal: { accentColor: '#64FFDA', accentColorForeground: '#000000', accentColorDark: '#26A69A' },
+  teal: { accentColor: '#AEDB01', accentColorForeground: '#000000', accentColorDark: '#AEDB01' },
 };
 
 type RadiusScale = 'large' | 'medium' | 'small' | 'none';
@@ -76,19 +76,19 @@ const rainbowkitTheme: Theme = {
     generalBorderDim: 'rgba(255, 255, 255, 0.04)',
     menuItemBackground: 'rgba(224, 232, 255, 0.1)',
     modalBackdrop: 'rgba(0, 0, 0, 0.5)',
-    modalBackground: '#372B1D',
+    modalBackground: '#2D2D2D',
     modalBorder: 'rgba(255, 255, 255, 0.08)',
     modalText: '#fff',
     modalTextDim: 'rgba(224, 232, 255, 0.3)',
     modalTextSecondary: 'rgba(255, 255, 255, 0.6)',
-    profileAction: '#26A69A',
+    profileAction: '#AEDB01',
     profileActionHover: 'rgba(224, 232, 255, 0.2)',
     profileForeground: 'rgba(224, 232, 255, 0.05)',
     selectedOptionBorder: 'rgba(224, 232, 255, 0.1)',
     standby: '#FFD641',
   },
   fonts: {
-    body: 'Roboto',
+    body: 'var(--font-gotham)',
   },
   radii: {
     actionButton: radiusScales.large.actionButton,

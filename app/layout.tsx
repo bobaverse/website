@@ -1,18 +1,14 @@
+import "@rainbow-me/rainbowkit/styles.css";
 import "@/styles/index.css";
-import { Roboto } from "next/font/google";
-import NavBar from "@/components/navigation/NavBar";
-import { FC } from "react";
-import { PageProps } from "@/interfaces";
+import { gotham } from "@/styles/fonts";
+import { classNames } from "@/utils/strings";
+import NavBar from "@/app/_navbar/nav-bar";
+import { PropsWithChildren } from "react";
 import { Metadata } from "next";
 import BlockchainProvider from "@/components/providers/BlockchainProvider";
-import Footer from "@/components/navigation/Footer";
+import Footer from "@/app/_navbar/Footer";
 
-const roboto = Roboto({
-  style: ["normal", "italic"],
-  weight: ["100", "300", "400", "500", "700", "900"],
-  display: "swap",
-  subsets: ["latin"],
-});
+
 
 export const metadata: Metadata = {
   title: "BobaVerse",
@@ -33,14 +29,13 @@ export const metadata: Metadata = {
   },
 };
 
-const RootLayout: FC<PageProps> = ({ children }) => {
+const RootLayout = ({ children }: PropsWithChildren) => {
   return (
-    <html lang="en" className={roboto.className}>
-      <body>
+    <html lang="en" className={classNames(gotham.className, "bg-boba-grey text-white")}>
+      <body className="bg-boba-grey">
         <BlockchainProvider>
           <NavBar />
           <div className="overflow-y-scroll h-full">{children}</div>
-          <Footer />
         </BlockchainProvider>
       </body>
     </html>

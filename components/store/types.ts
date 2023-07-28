@@ -17,3 +17,8 @@ export interface PlinkoState {
   addResult: (key: string, value: number) => void;
   clearResults: () => void;
 }
+
+export interface DrawerState {
+  sideBar: boolean;
+  setSideBar: (sideBar: boolean) => void;
+}

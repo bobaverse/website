@@ -23,7 +23,7 @@ const Plinko = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameState])
   return (
-    <div className="content">
+    <div className="pt-20 flex flex-col items-center h-full gap-y-4">
       <Game />
     </div>
   )

@@ -1,10 +1,9 @@
 'use client';
 import { BobaVerseArcadeABI } from "@/assets/abi/BobaVerseArcade";
-import Card from "@/components/containers/Card";
 import { ArcadeAddressMap } from "@/utils/blockchain/addresses";
-import { bobaAvax } from "@/utils/blockchain/chains";
+import { bobaEth } from "@/utils/blockchain/chains";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { BigNumber } from "ethers";
+
 import Image from "next/image";
 import React, { FC, useState } from "react";
 import { useAccount, useContractRead, useNetwork } from "wagmi";
@@ -24,13 +23,13 @@ const CurrentSeasonRanks: FC<CurrentSeasonRanksProps> = ({ month = (new Date()).
   const now = new Date();
 
   useContractRead({
-    address: ArcadeAddressMap[chain?.id || bobaAvax.id],
+    address: ArcadeAddressMap[chain?.id || bobaEth.id],
     abi: BobaVerseArcadeABI,
     functionName: 'getLeaderboardFor',
-    args: [0, BigNumber.from(year), BigNumber.from(month)],
+    args: [0, BigInt(year), BigInt(month)],
     onSuccess: ([addresses, scores]) => {
       const ranks = addresses
-        .map((a, i) => [a, scores[i].toNumber()] as [string, number])
+        .map((a, i) => [a, Number(scores[i])] as [string, number])
         .sort((a, b) => b[1] - a[1])
         .slice(0, 10)
         .map((a, i) => ({
