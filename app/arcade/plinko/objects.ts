@@ -1,6 +1,6 @@
 // noinspection JSSuspiciousNameCombination
 import { Bodies, Body } from "matter-js";
-import config from "@/components/arcade/plinko/config";
+import config from "@/app/arcade/plinko/config";
 import { random } from "@/utils/random";
 
 export const makeBoardBodies = (worldWidth: number, worldHeight: number) => {

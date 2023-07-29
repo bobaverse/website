@@ -1,6 +1,6 @@
 'use client';
 
-import AddressManager from "@/components/providers/AddressManager";
+import AddressManager from "@/components/providers/address-manager";
 import { FC } from "react";
 import { PageProps } from "@/interfaces";
 import { WagmiConfig } from "wagmi";

@@ -1,4 +1,4 @@
-import Button2 from "@/components/buttons/Button2";
+import Button from "@/components/buttons/Button2";
 import { AvatarIcon, JoystickIcon, TrophyIcon } from "@/components/icons";
 import Image from "next/image";
 import GameControllerGridPNG from "@/assets/game-controller-grid.png";
@@ -21,9 +21,9 @@ const Home = () => {
           </h1>
         </div>
         <div className="flex flex-col gap-4 w-fit lg:grid lg:grid-cols-3 lg:gap-8">
-          <Button2 text="Arcade" icon={JoystickIcon} href="/arcade" />
-          <Button2 text="Profile" icon={AvatarIcon} href="/profile" />
-          <Button2 text="Rankings" icon={TrophyIcon} href="/rankings" />
+          <Button text="Arcade" icon={JoystickIcon} href="/arcade" />
+          <Button text="Profile" icon={AvatarIcon} href="/profile" />
+          <Button text="Rankings" icon={TrophyIcon} href="/rankings" />
         </div>
       </div>
     </div>

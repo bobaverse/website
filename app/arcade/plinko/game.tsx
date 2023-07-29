@@ -2,9 +2,9 @@
 import { BobaVerseArcadeABI } from "@/assets/abi/BobaVerseArcade";
 import PlinkoBoard from '@/assets/arcade/plinko/PlinkoBoard.png';
 import PlinkoCups from '@/assets/arcade/plinko/PlinkoCups.png';
-import { ballImagesMap, makeBall, makeBoardBodies } from "@/components/arcade/plinko/objects";
-import PlinkoHighScore from "@/components/arcade/plinko/plinkoHighScore";
-import Button2 from "@/components/buttons/Button2";
+import { ballImagesMap, makeBall, makeBoardBodies } from "@/app/arcade/plinko/objects";
+import PlinkoHighScore from "@/app/arcade/plinko/plinko-high-score";
+import Button from "@/components/buttons/button";
 import { useArcadeStore } from '@/components/store/arcade'
 import { GameState } from "@/components/store/types";
 import { ArcadeAddressMap } from "@/utils/blockchain/addresses";
@@ -14,7 +14,7 @@ import { Body, Composite, Engine, Events, IEventCollision, Render, Runner } from
 import Image from "next/image";
 import { Loading, Notify } from "notiflix";
 import { useEffect, useRef, useState } from 'react'
-import { random } from 'utils/random'
+import { random } from '@/utils/random'
 import { parseEther } from "viem";
 import {
   useAccount,
@@ -295,7 +295,7 @@ const Game = () => {
         </div>
       </div>
       <div className="w-full sm:max-w-sm mx-auto">
-        <Button2
+        <Button
           onClick={address ? gameState === GameState.Ready ? onPrePlay : onPlay : openConnectModal}
           className="font-bold disabled:bg-gray-500 justify-center py-5 my-6"
           disabled={gameState === GameState.Ready ? (

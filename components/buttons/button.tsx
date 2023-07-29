@@ -12,7 +12,7 @@ interface Props {
   disabled?: boolean
 }
 
-const Button2 = ({ text, icon: Icon, className, iconClassName, href, onClick, disabled }: Props) => {
+const Button = ({ text, icon: Icon, className, iconClassName, href, onClick, disabled }: Props) => {
   const classes = classNames(
     "bg-boba-green rounded-lg flex items-center font-medium text-black w-full px-4 py-2",
     "space-x-4 lg:space-x-0 lg:space-y-1 lg:flex-col",
@@ -31,4 +31,4 @@ const Button2 = ({ text, icon: Icon, className, iconClassName, href, onClick, di
   );
 }
 
-export default Button2;
+export default Button;

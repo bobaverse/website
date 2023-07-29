@@ -1,6 +1,5 @@
 'use client';
 import { BobaVerseArcadeABI } from "@/assets/abi/BobaVerseArcade";
-import Card from "@/components/containers/Card";
 import { ArcadeAddressMap } from "@/utils/blockchain/addresses";
 import { bobaEth } from "@/utils/blockchain/chains";
 import { useState } from "react";
@@ -9,7 +8,7 @@ import { useAccount, useContractRead, useNetwork } from "wagmi";
 const MyRankCard = () => {
   const { address } = useAccount();
   const { chain } = useNetwork();
-  const [myStats, setMyStats] = useState<[number, number]>([-1, -1]);
+  const [ myStats, setMyStats ] = useState<[ number, number ]>([ -1, -1 ]);
 
   const now = new Date();
 
@@ -17,14 +16,14 @@ const MyRankCard = () => {
     address: ArcadeAddressMap[chain?.id || bobaEth.id],
     abi: BobaVerseArcadeABI,
     functionName: 'getLeaderboardFor',
-    args: [0, BigInt(now.getFullYear()), BigInt(now.getMonth() + 1)],
+    args: [ 0, BigInt(now.getFullYear()), BigInt(now.getMonth() + 1) ],
     enabled: !!address,
-    onSuccess: ([addresses, scores]) => {
+    onSuccess: ([ addresses, scores ]) => {
       if (!address) {
         return;
       }
       const ranks = addresses
-        .map((a, i) => [a, Number(scores[i])] as [string, number])
+        .map((a, i) => [ a, Number(scores[i]) ] as [ string, number ])
         .sort((a, b) => b[1] - a[1])
         .reduce((o, a, i) => {
           o[a[0]] = {
@@ -35,13 +34,13 @@ const MyRankCard = () => {
         }, {} as { [key: string]: { score: number, rank: number } });
 
       if (address in ranks) {
-        setMyStats([ranks[address].rank, ranks[address].score]);
+        setMyStats([ ranks[address].rank, ranks[address].score ]);
       }
     }
   })
-  const suffix = ['st', 'nd', 'rd', 'th']
+  const suffix = [ 'st', 'nd', 'rd', 'th' ]
   return (
-    <Card className="bg-seafoam max-w-sm">
+    <>
       <div className="flex justify-between">
         <span>My Rank</span>
         <span>My Score</span>
@@ -50,11 +49,13 @@ const MyRankCard = () => {
         <span>
           {myStats[0] === -1
             ? 'UNRANKED'
-            : `${myStats[0]}${(myStats[0] % 10 - 1) > 2 ? suffix[3] : suffix[myStats[0] % 10 - 1]} place`}
+            : `${myStats[0]}${(
+              myStats[0] % 10 - 1
+            ) > 2 ? suffix[3] : suffix[myStats[0] % 10 - 1]} place`}
         </span>
         <span>{myStats[1] === -1 ? '0' : myStats[1]}</span>
       </div>
-    </Card>
+    </>
   )
 }
 

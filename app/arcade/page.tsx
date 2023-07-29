@@ -1,5 +1,5 @@
 import GameControllerGridPNG from "@/assets/game-controller-grid.png";
-import Button2 from "@/components/buttons/Button2";
+import Button from "@/components/buttons/Button2";
 import { PlinkoIcon } from "@/components/icons";
 import { classNames } from "@/utils/strings";
 import Image from "next/image";
@@ -28,7 +28,7 @@ const Arcade: FC = () => {
         </div>
         <div className="flex flex-col gap-4 w-full sm:grid sm:grid-cols-3 sm:gap-8">
           {games.map((game, i) => (
-            <Button2
+            <Button
               key={i}
               className={classNames(
                 "sm:space-x-0 sm:space-y-1 sm:flex-col sm:px-7",

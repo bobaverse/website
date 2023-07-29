@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { useArcadeStore } from '@/components/store/arcade'
 import { GameState } from "@/components/store/types";
 
-const Game = dynamic(() => import('@/components/arcade/plinko'), { ssr: false })
+const Game = dynamic(() => import('@/app/arcade/plinko/game'), { ssr: false })
 
 const Plinko = () => {
   const gameState = useArcadeStore(state => state.state)
