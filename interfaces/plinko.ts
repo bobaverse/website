@@ -52,3 +52,9 @@ export type MultiplierType = {
   label: MultiplierLabelType
   img: string
 }
+
+export interface PlinkoPlayer {
+  address: string,
+  score: number,
+  rank: number
+}

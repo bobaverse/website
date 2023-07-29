@@ -1,26 +1,22 @@
 'use client';
-import { PlinkoIcon } from "@/components/icons";
 import { classNames } from "@/utils/strings";
+import Link from "next/link";
 import { Fragment, ReactNode } from "react";
 import { Menu, Transition } from '@headlessui/react'
-import { FaBasketball } from "react-icons/fa6";
-import { GiPinballFlipper } from "react-icons/gi";
 import { VscTriangleDown } from "react-icons/vsc";
 
+interface DropdownProps {
+  options: { text: string, value: string, icon: ReactNode }[]
+  query: Record<string, string>;
+}
 
 
-const options = [
-  { text: "Plinko", value: "plinko", icon: <PlinkoIcon size={20} /> },
-  { text: "Planko", value: "planko", icon: <FaBasketball size={20} /> },
-  { text: "Plonko", value: "plonko", icon: <GiPinballFlipper size={20} /> },
-]
-
-const RegionDropdown = () => {
+const RegionDropdown = ({ options, query }: DropdownProps) => {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
         <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-[#4A4A4A] px-3 py-2 text-sm font-semibold shadow-sm">
-          Global
+          {options.find(o => o.value === query.region)?.text}
           <VscTriangleDown className="-mr-1 h-5 w-5" aria-hidden="true" />
         </Menu.Button>
       </div>
@@ -38,10 +34,11 @@ const RegionDropdown = () => {
             {options.map((option, i) => (
               <Menu.Item key={i}>
                 {({ active }) => (
-                  <a
-                    href="#"
+                  <Link
+                    href={{ pathname: '/rankings', query: { ...query, region: option.value } }}
                     className={classNames(
-                      active ? 'text-boba-green' : 'text-white',
+                      option.value === query.region ? 'text-black' : active ? 'text-boba-green' : "text-white",
+                      option.value === query.region ? 'pointer-events-none' : '',
                       'group flex items-center px-4 py-2 text-sm'
                     )}
                   >
@@ -49,7 +46,7 @@ const RegionDropdown = () => {
                       {option.icon}
                     </div>
                     {option.text}
-                  </a>
+                  </Link>
                 )}
               </Menu.Item>
             ))}

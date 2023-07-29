@@ -8,7 +8,7 @@ import Button2 from "@/components/buttons/Button2";
 import { useArcadeStore } from '@/components/store/arcade'
 import { GameState } from "@/components/store/types";
 import { ArcadeAddressMap } from "@/utils/blockchain/addresses";
-import { classNames } from "@/utils/strings";
+import { classNames, parseViemDetailedError } from "@/utils/strings";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { Body, Composite, Engine, Events, IEventCollision, Render, Runner } from 'matter-js'
 import Image from "next/image";
@@ -52,6 +52,7 @@ const Game = () => {
   const setGameState = useArcadeStore(state => state.setState);
   const { address } = useAccount();
   const { chain } = useNetwork();
+  const chainId = chain?.id || 288;
   const [finalScore, setFinalScore] = useState<number>(0);
   const [finalBallX, setFinalBallX] = useState<number>(50);
   const [engine] = useState(Engine.create());
@@ -206,23 +207,19 @@ const Game = () => {
     isError: isPreparePlayError,
     error: preparePlayError
   } = usePrepareContractWrite({
-    address: ArcadeAddressMap[chain?.id || 0],
+    address: ArcadeAddressMap[chainId],
     abi: BobaVerseArcadeABI,
     functionName: 'playPlinko',
-    chainId: chain?.id,
+    chainId,
     value: parseEther('0.01')
   })
 
+  console.log(preparePlayConfig)
   const {
     data: writePlayData,
     write: writePlay,
   } = useContractWrite({
     ...preparePlayConfig,
-    request: {
-      ...preparePlayConfig.request,
-      // Not ideal, but the current suggested way to fix the HC gas limit too low issue
-      gas: preparePlayConfig.request.gas ? preparePlayConfig.request.gas * BigInt(120) / BigInt(100) : BigInt(0)
-    },
     onSuccess: (tx) => {
       Loading.change("Waiting for 1 confirmation...");
       Notify.success(`TX: ${tx.hash.substring(0, 6)}...${tx.hash.substring(tx.hash.length - 4)}`);
@@ -235,7 +232,7 @@ const Game = () => {
 
   useWaitForTransaction({
     hash: writePlayData?.hash,
-    chainId: chain?.id,
+    chainId,
     onError: (error) => {
       Loading.remove();
       if (error.message.startsWith('missing revert data')) {
@@ -246,10 +243,10 @@ const Game = () => {
     }
   })
   useContractEvent({
-    address: ArcadeAddressMap[chain?.id || 0],
+    address: ArcadeAddressMap[chainId],
     abi: BobaVerseArcadeABI,
     eventName: 'PlinkoResult',
-    chainId: chain?.id,
+    chainId,
     listener: (log) => {
       for (const l of log) {
         if ( 'ballPositions' in l.args && l.args.from === address) {
@@ -305,9 +302,9 @@ const Game = () => {
             isPreparePlayError
           ) : gameState === GameState.Started || gameState === GameState.Finalizing}
           text={isPreparePlayError
-            ? preparePlayError?.message.startsWith('cannot estimate gas')
+            ? parseViemDetailedError(preparePlayError)?.details?.startsWith('cannot estimate gas')
               ? 'Contract Disabled'
-              : preparePlayError?.message
+              : parseViemDetailedError(preparePlayError)?.details
             : address
               ? buttonText[gameState]
               : 'Please Connect Wallet'}
