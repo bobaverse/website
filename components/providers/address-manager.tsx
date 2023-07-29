@@ -1,6 +1,5 @@
 'use client';
 import { getAddressFromCookie, setAddressCookie } from "@/components/providers/cookie-server-action";
-import { cookies } from "next/headers";
 import { useEffect } from "react";
 import { useAccount } from "wagmi";
 
