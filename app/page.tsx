@@ -1,4 +1,4 @@
-import Button from "@/components/buttons/Button2";
+import Button from "@/components/buttons/button";
 import { AvatarIcon, JoystickIcon, TrophyIcon } from "@/components/icons";
 import Image from "next/image";
 import GameControllerGridPNG from "@/assets/game-controller-grid.png";

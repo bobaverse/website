@@ -1,5 +1,5 @@
 import GameControllerGridPNG from "@/assets/game-controller-grid.png";
-import Button from "@/components/buttons/Button2";
+import Button from "@/components/buttons/button";
 import { PlinkoIcon } from "@/components/icons";
 import { classNames } from "@/utils/strings";
 import Image from "next/image";
