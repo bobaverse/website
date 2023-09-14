@@ -5,6 +5,32 @@ export const BobaVerseArcadeABI = [
     "type": "constructor"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "array1",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "array2",
+        "type": "uint256"
+      }
+    ],
+    "name": "ArrayLengthMismatch",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "EmptyArray",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NoCreditsRemaining",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -253,6 +279,43 @@ export const BobaVerseArcadeABI = [
         "internalType": "bytes32",
         "name": "",
         "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address[]",
+        "name": "wallets",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "_credits",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "addCredits",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "wallet",
+        "type": "address"
+      }
+    ],
+    "name": "credits",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "credits",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",

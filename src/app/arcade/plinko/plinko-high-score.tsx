@@ -46,9 +46,12 @@ const PlinkoHighScore = () => {
   })
   return (
     <>
-      <span className="col-span-2 w-full bg-[#4A4A4A] py-4 rounded-xl shadow-2xl font-medium text-center">
+      <span className="hidden sm:block col-span-2 w-full bg-[#4A4A4A] py-4 rounded-xl shadow-2xl font-medium text-center">
         Personal Season Highscore:
       </span>
+      <div className="col-span-2 w-full bg-[#4A4A4A] py-4 rounded-xl shadow-2xl font-medium text-center sm:hidden">
+        <span>Personal High Score:</span>
+      </div>
       <span className="w-full bg-[#4A4A4A] py-4 rounded-xl shadow-2xl font-medium text-center">
         {highScore}
       </span>

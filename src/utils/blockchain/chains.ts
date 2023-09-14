@@ -39,8 +39,8 @@ export const bobaBnb = {
     default: { http: ['https://replica.bnb.boba.network'] },
   },
   blockExplorers: {
-    blockscout: { name: 'Block Explorer', url: 'https://blockexplorer.bnb.boba.network/' },
-    default: { name: 'Block Explorer', url: 'https://blockexplorer.bnb.boba.network/' },
+    blockscout: { name: 'Block Explorer', url: 'https://bnb.bobascan.com/' },
+    default: { name: 'Block Explorer', url: 'https://bnb.bobascan.com/' },
   },
   // contracts: {
   //   multicall3: {

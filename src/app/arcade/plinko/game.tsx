@@ -18,11 +18,11 @@ import { random } from '@/utils/random'
 import { parseEther } from "viem";
 import {
   useAccount,
-  useContractEvent,
+  useContractEvent, useContractRead,
   useContractWrite,
   useNetwork,
   usePrepareContractWrite,
-  useWaitForTransaction
+  useWaitForTransaction,
 } from "wagmi";
 
 import config from './config';
@@ -202,6 +202,14 @@ const Game = () => {
     }
   }
 
+  const { data: credits = BigInt(0) } = useContractRead({
+    address: ArcadeAddressMap[chainId],
+    abi: BobaVerseArcadeABI,
+    functionName: "credits",
+    args: [address || '0x0'],
+    chainId,
+  })
+
   const {
     config: preparePlayConfig,
     isError: isPreparePlayError,
@@ -269,7 +277,6 @@ const Game = () => {
     }
   }
 
-
   Events.on(engine, "collisionStart", onBodyCollisionStart);
   return (
     <div className="flex flex-col justify-center gap-y-2">
@@ -304,12 +311,20 @@ const Game = () => {
           text={isPreparePlayError
             ? parseViemDetailedError(preparePlayError)?.details?.startsWith('cannot estimate gas')
               ? 'Contract Disabled'
-              : parseViemDetailedError(preparePlayError)?.details
+              : parseViemDetailedError(preparePlayError)?.error === "NoCreditsRemaining()"
+                ? "Out Of Credits"
+                : parseViemDetailedError(preparePlayError)?.details
             : address
               ? buttonText[gameState]
               : 'Please Connect Wallet'}
         />
         <div className="grid grid-cols-3 gap-x-8 gap-y-4">
+          <span className="col-span-2 w-full bg-[#4A4A4A] py-4 rounded-xl shadow-2xl font-medium text-center">
+            Credits:
+          </span>
+          <span className="w-full bg-[#4A4A4A] py-4 rounded-xl shadow-2xl font-medium text-center">
+            {credits.toString()}
+          </span>
           <span className="col-span-2 w-full bg-[#4A4A4A] py-4 rounded-xl shadow-2xl font-medium text-center">
             Current Score:
           </span>
